@@ -57,22 +57,18 @@ GifEncoder::~GifEncoder() {
         rs = nullptr;
     }
 #endif
-    outfile.close();
     delete[] rsCacheDir;
 }
 
-bool GifEncoder::init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount,
+bool GifEncoder::init(std::stringstream& out, uint16_t width, uint16_t height, uint32_t loopCount,
                       uint32_t threadCount) {
-    outfile.open(path, std::ios::out | std::ios::binary);
-    if (!outfile.is_open()) {
-        return false;
-    }
+	outfile = &out;
     this->screenWidth = width;
     this->screenHeight = height;
-    GifBlockWriter::writeHeaderBlock(outfile);
-    GifBlockWriter::writeLogicalScreenDescriptorBlock(outfile, screenWidth, screenHeight, false, 1,
+    GifBlockWriter::writeHeaderBlock(*outfile);
+    GifBlockWriter::writeLogicalScreenDescriptorBlock(*outfile, screenWidth, screenHeight, false, 1,
                                                       false, 0, 0, 0);
-    GifBlockWriter::writeNetscapeLoopingExtensionBlock(outfile, loopCount);
+    GifBlockWriter::writeNetscapeLoopingExtensionBlock(*outfile, loopCount);
     if (threadCount > 8) {
         threadCount = 8;
     }
@@ -319,13 +315,13 @@ std::vector<uint8_t> GifEncoder::addImage(const std::vector<uint32_t> &original,
 }
 
 void GifEncoder::flush(const std::vector<uint8_t> &content) {
-    size_t size = content.size();
-    for (int i = 0; i < size; ++i) {
-        outfile.write((char *) (&content[i]), 1);
-    }
+    //size_t size = content.size();
+    //for (int i = 0; i < size; ++i) {
+    //    outfile->write((char *) (&content[i]), 1);
+    //}
+	outfile->write((char*)content.data(), content.size());
 }
 
 void GifEncoder::finishEncoding() {
-    GifBlockWriter::writeTerminator(outfile);
-    outfile.close();
+    GifBlockWriter::writeTerminator(*outfile);
 }

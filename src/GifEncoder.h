@@ -92,7 +92,7 @@ namespace blk {
 
         ~GifEncoder();
 
-        bool init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadCount);
+        bool init(std::stringstream& out, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadCount);
 
         std::vector<uint8_t> addImage(const std::vector<uint32_t> &original, uint32_t delay,
                                       QuantizerType qType, DitherType dType,
@@ -105,7 +105,7 @@ namespace blk {
 
     private:
 
-        std::ofstream outfile;
+		std::stringstream* outfile = nullptr;
 
     };
 

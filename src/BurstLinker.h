@@ -14,7 +14,7 @@ namespace blk {
 
     public:
 
-        bool init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount,
+        bool init(std::stringstream& out, uint16_t width, uint16_t height, uint32_t loopCount,
                   uint32_t threadNum);
 
         bool connect(std::vector<uint32_t> &image, uint32_t delay,
@@ -27,7 +27,7 @@ namespace blk {
 
         void release();
 
-        void analyzerGifInfo(const char *path);
+        static std::string analyzeGifInfo(std::stringstream& file);
 
     private:
 

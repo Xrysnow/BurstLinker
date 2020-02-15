@@ -3,18 +3,19 @@
 //
 
 #include <algorithm>
+#include <sstream>
 #include "GifBlockWriter.h"
 
 using namespace blk;
 
-void GifBlockWriter::writeHeaderBlock(std::ofstream &file) {
+void GifBlockWriter::writeHeaderBlock(std::stringstream& file) {
     file.write("GIF89a", 6);
 }
 
 static const uint32_t GLOBAL_COLOR_TABLE_FLAG = 1 << 7;
 static const uint32_t LSD_SORT_FLAG = 1 << 3;
 
-void GifBlockWriter::writeLogicalScreenDescriptorBlock(std::ofstream &file, int32_t logicalScreenWidth,
+void GifBlockWriter::writeLogicalScreenDescriptorBlock(std::stringstream& file, int32_t logicalScreenWidth,
                                                        int32_t logicalScreenHeight,
                                                        bool globalColorTable, int32_t colorResolution,
                                                        bool sort,
@@ -45,7 +46,7 @@ static const uint8_t SUB_BLOCK_SIZE = 0x03;
 static const uint8_t SUB_BLOCK_ID = 0x01;
 
 // Application Extension
-void GifBlockWriter::writeNetscapeLoopingExtensionBlock(std::ofstream &file, uint32_t loopCount) {
+void GifBlockWriter::writeNetscapeLoopingExtensionBlock(std::stringstream& file, uint32_t loopCount) {
     file.write((char *) (&EXTENSION_INTRODUCER), 1);
     file.write((char *) (&APPLICATION_EXTENSION), 1);
     // 8+3
@@ -153,7 +154,7 @@ void GifBlockWriter::writeColorTableUnpadded(std::vector<uint8_t> &content, int 
     }
 }
 
-void GifBlockWriter::writeImageDataBlock(std::ofstream &file, uint8_t colorDepth,
+void GifBlockWriter::writeImageDataBlock(std::stringstream& file, uint8_t colorDepth,
                                          std::list<uint8_t *> lzw, int lzwSize) {
     file.write((const char *) &colorDepth, 1);
     int index = 0;
@@ -168,7 +169,7 @@ void GifBlockWriter::writeImageDataBlock(std::ofstream &file, uint8_t colorDepth
 
 static const uint8_t GIF_TERMINATOR = 0x3B;
 
-void GifBlockWriter::writeTerminator(std::ofstream &file) {
+void GifBlockWriter::writeTerminator(std::stringstream& file) {
     // GIF_TERMINATOR
     file.write((char *) (&GIF_TERMINATOR), 1);
 }

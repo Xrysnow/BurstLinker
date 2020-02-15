@@ -7,9 +7,9 @@
 
 using namespace blk;
 
-bool BurstLinker::init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadNum) {
+bool BurstLinker::init(std::stringstream& out, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadNum) {
     gifEncoder = std::make_unique<GifEncoder>();
-    return gifEncoder->init(path, width, height, 0, threadNum);
+    return gifEncoder->init(out, width, height, loopCount, threadNum);
 }
 
 bool BurstLinker::connect(std::vector<uint32_t> &image, uint32_t delay,
@@ -54,7 +54,6 @@ void BurstLinker::release() {
     }
 }
 
-void BurstLinker::analyzerGifInfo(const char *path) {
-    GifAnalyzer gifAnalyzer;
-    gifAnalyzer.showGifInfo(path);
+std::string BurstLinker::analyzeGifInfo(std::stringstream& file) {
+    return GifAnalyzer::showGifInfo(file);
 }
