@@ -30,20 +30,32 @@ bool BurstLinker::connect(std::vector<std::vector<uint32_t>> &images, uint32_t d
     if (gifEncoder == nullptr) {
         return false;
     }
-    size_t size = images.size();
-    std::vector<std::future<std::vector<uint8_t>>> tasks;
-    for (int k = 0; k < size; ++k) {
-        auto result = gifEncoder->threadPool->enqueue([=, &images]() {
-            std::vector<uint8_t> content;
-            auto image = images[k];
-            gifEncoder->addImage(image, delay, quantizerType, ditherType, transparencyOption, left, top, content);
-            return content;
-        });
-        tasks.emplace_back(std::move(result));
+    if (gifEncoder->threadPool)
+    {
+	    size_t size = images.size();
+	    std::vector<std::future<std::vector<uint8_t>>> tasks;
+	    for (int k = 0; k < size; ++k) {
+	        auto result = gifEncoder->threadPool->enqueue([=, &images]() {
+	            std::vector<uint8_t> content;
+	            auto image = images[k];
+	            gifEncoder->addImage(image, delay, quantizerType, ditherType, transparencyOption, left, top, content);
+	            return content;
+	        });
+	        tasks.emplace_back(std::move(result));
+	    }
+	    for (auto &task : tasks) {
+	        std::vector<uint8_t> result = task.get();
+	        gifEncoder->flush(result);
+	    }
     }
-    for (auto &task : tasks) {
-        std::vector<uint8_t> result = task.get();
-        gifEncoder->flush(result);
+    else
+    {
+	    for (auto& image : images)
+	    {
+			std::vector<uint8_t> content;
+			gifEncoder->addImage(image, delay, quantizerType, ditherType, transparencyOption, left, top, content);
+			gifEncoder->flush(content);
+	    }
     }
     return true;
 }

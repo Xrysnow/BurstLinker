@@ -2,14 +2,13 @@
 // Created by succlz123 on 17-9-5.
 //
 
+#ifndef BURSTLINKER_GIFENCODER_H
+#define BURSTLINKER_GIFENCODER_H
+
 #include <cstdint>
 #include <fstream>
 #include <vector>
 #include "ThreadPool.h"
-
-#ifndef BURSTLINKER_GIFENCODER_H
-#define BURSTLINKER_GIFENCODER_H
-
 
 namespace blk {
 

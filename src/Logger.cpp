@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Logger.h"
+#include <chrono>
 
 #if defined(__RenderScript__) || defined(__AndroidLog__)
 

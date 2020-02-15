@@ -21,7 +21,7 @@ namespace blk {
                      QuantizerType quantizerType, DitherType ditherType, int32_t transparencyOption,
                      uint16_t left, uint16_t top);
 
-        bool connect(std::vector<std::vector<uint32_t >> &images, uint32_t delay,
+        bool connect(std::vector<std::vector<uint32_t>> &images, uint32_t delay,
                      QuantizerType quantizerType, DitherType ditherType, int32_t transparencyOption,
                      uint16_t left, uint16_t top);
 
