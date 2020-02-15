@@ -4,6 +4,7 @@
 
 #ifndef BURSTLINKER_GIFANALYZER_H
 #define BURSTLINKER_GIFANALYZER_H
+#include <sstream>
 
 namespace blk {
 
@@ -11,7 +12,7 @@ namespace blk {
 
     public:
 
-        void showGifInfo(const char *path);
+	    static std::string showGifInfo(std::stringstream& file);
 
     };
 
