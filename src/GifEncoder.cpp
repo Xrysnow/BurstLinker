@@ -73,7 +73,7 @@ bool GifEncoder::init(std::stringstream& out, uint16_t width, uint16_t height, u
         threadCount = 8;
     }
     if (threadCount > 1) {
-        threadPool = std::make_unique<ThreadPool>(threadCount);
+        threadPool = std::unique_ptr<ThreadPool>(new ThreadPool(threadCount));
     }
     Logger::log(debugLog, "Image size is " + Logger::toString(width * height));
     return true;
@@ -90,27 +90,27 @@ std::vector<uint8_t> GifEncoder::addImage(const std::vector<uint32_t> &original,
     std::string quantizerStr;
     switch (qType) {
         case QuantizerType::Uniform:
-            colorQuantizer = std::make_unique<UniformQuantizer>();
+            colorQuantizer = std::unique_ptr<UniformQuantizer>(new UniformQuantizer());
             quantizerStr = "UniformQuantizer";
             break;
         case QuantizerType::MedianCut:
-            colorQuantizer = std::make_unique<MedianCutQuantizer>();
+            colorQuantizer = std::unique_ptr<MedianCutQuantizer>(new MedianCutQuantizer());
             quantizerStr = "MedianCutQuantizer";
             break;
         case QuantizerType::KMeans:
-            colorQuantizer = std::make_unique<KMeansQuantizer>();
+            colorQuantizer = std::unique_ptr<KMeansQuantizer>(new KMeansQuantizer());
             quantizerStr = "KMeansQuantizer";
             break;
         case QuantizerType::Random:
-            colorQuantizer = std::make_unique<RandomQuantizer>();
+            colorQuantizer = std::unique_ptr<RandomQuantizer>(new RandomQuantizer());
             quantizerStr = "RandomQuantizer";
             break;
         case QuantizerType::Octree:
-            colorQuantizer = std::make_unique<OctreeQuantizer>();
+            colorQuantizer = std::unique_ptr<OctreeQuantizer>(new OctreeQuantizer());
             quantizerStr = "OctreeQuantizer";
             break;
         case QuantizerType::NeuQuant:
-            colorQuantizer = std::make_unique<NeuQuantQuantizer>();
+            colorQuantizer = std::unique_ptr<NeuQuantQuantizer>(new NeuQuantQuantizer());
             quantizerStr = "NeuQuantQuantizer";
             break;
     }
@@ -253,19 +253,19 @@ std::vector<uint8_t> GifEncoder::addImage(const std::vector<uint32_t> &original,
 #else
     switch (dType) {
         case DitherType::No:
-            ditherer = std::make_unique<NoDitherer>();
+            ditherer = std::unique_ptr<NoDitherer>(new NoDitherer());
             dithererStr = "NoDitherer";
             break;
         case DitherType::M2:
-            ditherer = std::make_unique<M2Ditherer>();
+            ditherer = std::unique_ptr<M2Ditherer>(new M2Ditherer());
             dithererStr = "M2Ditherer";
             break;
         case DitherType::Bayer:
-            ditherer = std::make_unique<BayerDitherer>();
+            ditherer = std::unique_ptr<BayerDitherer>(new BayerDitherer());
             dithererStr = "BayerDitherer";
             break;
         case DitherType::FloydSteinberg:
-            ditherer = std::make_unique<FloydSteinbergDitherer>();
+            ditherer = std::unique_ptr<FloydSteinbergDitherer>(new FloydSteinbergDitherer());
             dithererStr = "FloydSteinbergDitherer";
             break;
     }

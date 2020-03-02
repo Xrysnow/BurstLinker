@@ -8,7 +8,7 @@
 using namespace blk;
 
 bool BurstLinker::init(std::stringstream& out, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadNum) {
-    gifEncoder = std::make_unique<GifEncoder>();
+    gifEncoder = std::unique_ptr<GifEncoder>(new GifEncoder());
     return gifEncoder->init(out, width, height, loopCount, threadNum);
 }
 
