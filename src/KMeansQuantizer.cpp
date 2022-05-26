@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <map>
+#include <cstring>
 #include "KMeansQuantizer.h"
 #include "KDTree.h"
 #include "Logger.h"
@@ -74,7 +75,7 @@ int32_t KMeansQuantizer::quantize(const std::vector<ARGB> &in, uint32_t maxColor
         // init
         counts.assign(maxColorCount, 0);
         for (size_t i = 0; i < maxColorCount; i++) {
-            memset(nextMeans[i], 0, sizeof(int) * 3);
+            std::memset(nextMeans[i], 0, sizeof(int) * 3);
         }
         lastCost = currCost;
         currCost = 0;
