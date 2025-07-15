@@ -5,8 +5,9 @@
 #ifndef BURSTLINKER_LZWENCODER_H
 #define BURSTLINKER_LZWENCODER_H
 
-#include <fstream>
+#include <cstdint>
 #include <cstring>
+#include <fstream>
 #include <list>
 #include <vector>
 
